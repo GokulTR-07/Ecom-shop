@@ -4,15 +4,17 @@ const cookieParser = require("cookie-parser");
 // const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
+const path = require("path");
 
 app.use(express.urlencoded({ extended: true, limit:"10mb" }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: "https://ecom-shop-z8uk.vercel.app/",
+  // origin:"https://ecom-shop-z8uk-qfl6xqy8t-gokuls-projects-ba2bbec3.vercel.app/",
+  origin: "https://ecom-shop-z8uk.vercel.app",
   credentials:true,
 }));
-app.use("/", express.static("uploads"));
+app.use("/", express.static(path.join(__dirname,"./uploads")));
 
 app.use("/test", (req, res) => {
   res.send("Hello world!");

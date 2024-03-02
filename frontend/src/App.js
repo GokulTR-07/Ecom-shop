@@ -29,7 +29,6 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import ProtectedAdminRoute from './routes/ProtectedAdminRoute.js';
 
-// const stripePromise = loadStripe("pk_test_51OmCpsSC2wMK0MF2CsNEdT0UdVw4P0iaYrnpew9C0tliw8yeVUn1Gl1X7ZBWmP2uY2jdwlpqoOYZYqij8ZxxoidI000UBuxXa6")
 
 function App() {
 
@@ -72,7 +71,7 @@ function App() {
   
   return (
         <BrowserRouter>
-          {stripeApiKey && 
+          {stripeApiKey &&  
           // clientSecret && 
           (
           <Elements stripe={stripeApiKey} 
@@ -88,7 +87,7 @@ function App() {
                 }
               />
             </Routes>
-          </Elements>
+          </Elements> 
         )}
         <Routes>
           <Route path='/' element={<HomePage/>}/>

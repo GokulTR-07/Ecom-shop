@@ -16,6 +16,7 @@ import { server } from "../../server";
 import { toast } from "react-toastify";
 import { RxCross1 } from "react-icons/rx";
 
+
 const Payment = () => {
   const [orderData, setOrderData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -23,10 +24,20 @@ const Payment = () => {
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
+  
+  // const [clientSecret, setClientSecret] = useState("");
+
+  // async function getClientSecret(){
+  //     const { secret } = await axios.post(`${server}/payment/process`);
+  //     console.log(secret.clientSecret);
+  //     setClientSecret(secret.clientSecret);
+  //   }
+    
 
   useEffect(() => {
     const orderData = JSON.parse(localStorage.getItem("latestOrder"));
     setOrderData(orderData);
+    // getClientSecret();
   }, []);
 
   const createOrder = (data, actions) => {
@@ -103,23 +114,23 @@ const Payment = () => {
   const paymentHandler = async (e) => {
     e.preventDefault();
     try {
-      let config = {
+      let config = 
+      {
         headers: {
-          "Content-Type": "application/json",
-          // "Authorization": `Bearer ${process.env.STRIPE_SECRET_KEY}`
-        },
+          "Content-Type": "application/json"
+        }
       };
 
-      const { data } = await axios.post(
-        `${server}/payment/process`,
-        paymentData,
-        config,
+      const { data } = await axios.post(`${server}/payment/process`,
+      paymentData,
+      config,
       );
-
+      // console.log(data);
       const client_secret = data.client_secret;
 
+
       if (!stripe || !elements) return;
-      const result = await stripe.confirmCardPayment(client_secret, {
+      const result = await stripe.confirmCardPayment(client_secret,{
         payment_method: {
           card: elements.getElement(CardNumberElement),
         },
@@ -229,97 +240,98 @@ const PaymentInfo = ({
         </div>
 
         {/* pay with card */}
-        {select === 1 ? (
-          <div className="w-full flex border-b">
-            <form className="w-full" onSubmit={paymentHandler}>
-              <div className="w-full flex pb-3">
-                <div className="w-[50%]">
-                  <label className="block pb-2">Name On Card</label>
-                  <input
-                    required
-                    placeholder={user && user.name}
-                    className={`${styles.input} !w-[95%] text-[#444]`}
-                    value={user && user.name}
-                  />
-                </div>
-                <div className="w-[50%]">
-                  <label className="block pb-2">Exp Date</label>
-                  <CardExpiryElement
-                    className={`${styles.input}`}
-                    options={{
-                      style: {
-                        base: {
-                          fontSize: "19px",
-                          lineHeight: 1.5,
-                          color: "#444",
-                        },
-                        empty: {
-                          color: "#3a120a",
-                          backgroundColor: "transparent",
-                          "::placeholder": {
-                            color: "#444",
-                          },
-                        },
-                      },
-                    }}
-                  />
-                </div>
-              </div>
 
-              <div className="w-full flex pb-3">
-                <div className="w-[50%]">
-                  <label className="block pb-2">Card Number</label>
-                  <CardNumberElement
-                    className={`${styles.input} !h-[35px] !w-[95%]`}
-                    options={{
-                      style: {
-                        base: {
-                          fontSize: "19px",
-                          lineHeight: 1.5,
-                          color: "#444",
-                        },
-                        empty: {
-                          color: "#3a120a",
-                          backgroundColor: "transparent",
-                          "::placeholder": {
-                            color: "#444",
-                          },
-                        },
-                      },
-                    }}
-                  />
-                </div>
-                <div className="w-[50%]">
-                  <label className="block pb-2">CVV</label>
-                  <CardCvcElement
-                    className={`${styles.input} !h-[35px]`}
-                    options={{
-                      style: {
-                        base: {
-                          fontSize: "19px",
-                          lineHeight: 1.5,
-                          color: "#444",
-                        },
-                        empty: {
-                          color: "#3a120a",
-                          backgroundColor: "transparent",
-                          "::placeholder": {
-                            color: "#444",
-                          },
-                        },
-                      },
-                    }}
-                  />
-                </div>
-              </div>
-              <input
-                type="submit"
-                value="Submit"
-                className={`${styles.button} !bg-[#f63b60] text-[#fff] h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
-              />
-            </form>
-          </div>
-        ) : null}
+         {select === 1 ? (
+           <div className="w-full flex border-b">
+             <form className="w-full" onSubmit={paymentHandler}>
+               <div className="w-full flex pb-3">
+                 <div className="w-[50%]">
+                   <label className="block pb-2">Name On Card</label>
+                   <input
+                     required
+                     placeholder={user && user.name}
+                     className={`${styles.input} !w-[95%] text-[#444]`}
+                     value={user && user.name}
+                   />
+                 </div>
+                 <div className="w-[50%]">
+                   <label className="block pb-2">Exp Date</label>
+                   <CardExpiryElement
+                     className={`${styles.input}`}
+                     options={{
+                       style: {
+                         base: {
+                           fontSize: "19px",
+                           lineHeight: 1.5,
+                           color: "#444",
+                         },
+                         empty: {
+                           color: "#3a120a",
+                           backgroundColor: "transparent",
+                           "::placeholder": {
+                             color: "#444",
+                           },
+                         },
+                       },
+                     }}
+                   />
+                 </div>
+               </div>
+
+               <div className="w-full flex pb-3">
+                 <div className="w-[50%]">
+                   <label className="block pb-2">Card Number</label>
+                   <CardNumberElement
+                     className={`${styles.input} !h-[35px] !w-[95%]`}
+                     options={{
+                       style: {
+                         base: {
+                           fontSize: "19px",
+                           lineHeight: 1.5,
+                           color: "#444",
+                         },
+                         empty: {
+                           color: "#3a120a",
+                           backgroundColor: "transparent",
+                           "::placeholder": {
+                             color: "#444",
+                           },
+                         },
+                       },
+                     }}
+                   />
+                 </div>
+                 <div className="w-[50%]">
+                   <label className="block pb-2">CVV</label>
+                   <CardCvcElement
+                     className={`${styles.input} !h-[35px]`}
+                     options={{
+                       style: {
+                         base: {
+                           fontSize: "19px",
+                           lineHeight: 1.5,
+                           color: "#444",
+                         },
+                         empty: {
+                           color: "#3a120a",
+                           backgroundColor: "transparent",
+                           "::placeholder": {
+                             color: "#444",
+                           },
+                         },
+                       },
+                     }}
+                   />
+                 </div>
+               </div>
+               <input
+                 type="submit"
+                 value="Submit"
+                 className={`${styles.button} !bg-[#f63b60] text-[#fff] h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
+               />
+             </form>
+           </div>
+         ) : null}
       </div>
       <br />
       

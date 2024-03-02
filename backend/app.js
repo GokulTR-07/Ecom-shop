@@ -10,7 +10,8 @@ app.use(express.urlencoded({ extended: true, limit:"10mb" }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: "https://ecom-shop-mgg2.vercel.app/",
+  origin : "http://localhost:3000/",
+  // origin: "https://ecom-shop-mgg2.vercel.app/",
   credentials:true,
 }));
 app.use("/", express.static(path.join(__dirname,"./uploads")));

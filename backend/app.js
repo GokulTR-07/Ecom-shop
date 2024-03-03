@@ -6,7 +6,8 @@ const cors = require("cors");
 const app = express();
 const path = require("path");
 
-app.use(express.urlencoded({ extended: true, limit:"10mb" }));
+
+app.use(express.urlencoded({ extended: true, limit:"30mb" }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({

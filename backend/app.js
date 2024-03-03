@@ -10,7 +10,6 @@ app.use(express.urlencoded({ extended: true, limit:"10mb" }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  // origin : "http://localhost:3000/",
   origin: "https://ecom-shop-z8uk.vercel.app",
   credentials:true,
 }));

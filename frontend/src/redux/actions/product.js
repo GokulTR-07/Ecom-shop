@@ -4,16 +4,15 @@ import { server } from "../../server";
 // create product
 export const createProduct =
   (
-    newForm
-    // name,
-    // description,
-    // category,
-    // tags,
-    // originalPrice,
-    // discountPrice,
-    // stock,
-    // shopId,
-    // images
+    name,
+    description,
+    category,
+    tags,
+    originalPrice,
+    discountPrice,
+    stock,
+    shopId,
+    images
   ) =>
   async (dispatch) => {
     try {
@@ -21,21 +20,17 @@ export const createProduct =
         type: "productCreateRequest",
       });
 
-      const config = { headers: {"Content-Type": "multipart/form-data"}};
-
       const { data } = await axios.post(
         `${server}/product/create-product`,
-        newForm,
-        config
-        // name,
-        // description,
-        // category,
-        // tags,
-        // originalPrice,
-        // discountPrice,
-        // stock,
-        // shopId,
-        // images,
+        name,
+        description,
+        category,
+        tags,
+        originalPrice,
+        discountPrice,
+        stock,
+        shopId,
+        images,
       );
       dispatch({
         type: "productCreateSuccess",
@@ -49,9 +44,7 @@ export const createProduct =
     }
   };
 
-
 // get All Products of a shop
-
 export const getAllProductsShop = (id) => async (dispatch) => {
   try {
     dispatch({
@@ -74,7 +67,6 @@ export const getAllProductsShop = (id) => async (dispatch) => {
 };
 
 // delete product of a shop
-
 export const deleteProduct = (id) => async (dispatch) => {
   try {
     dispatch({
@@ -101,7 +93,6 @@ export const deleteProduct = (id) => async (dispatch) => {
 };
 
 // get all products
-
 export const getAllProducts = () => async (dispatch) => {
   try {
     dispatch({

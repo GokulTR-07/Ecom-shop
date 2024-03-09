@@ -83,15 +83,15 @@ const ProductDetailsCard = ({ setOpen, data }) => {
 
             <div className="block w-full 800px:flex">
               <div className="w-full 800px:w-[50%]">
-                {/* <img src={`${data.images && data.images[0]?.url}`} alt="" /> */}
-                <img src={`${backend_url}${data.images && data.images[0]}`} alt="" className="mb-4"/>
+                <img src={`${data.images && data.images[0]?.url}`} alt="" className="mb-4"/> 
+                {/* <img src={`${backend_url}${data.images && data.images[0]}`} alt="" classNam/>e="mb-4"/> */}
                 <div className="flex">
                   <Link to={`/shop/preview/${data.shop._id}`} className="flex">
                     <img
-                    src={`${backend_url}${data.shop.avatar}`}
+                    // src={`${backend_url}${data.shop.avatar}`}
                       // src={`${backend_url}${data.images && data.images[0]}`}
                       // src={`${data.images && data.images[0]?.url}`}
-                      // src={data.shop.shop_avatar.url}
+                      src={data.shop.shop_avatar.url}
                       alt=""
                       className="w-[50px] h-[50px] rounded-full mr-2"
                     />

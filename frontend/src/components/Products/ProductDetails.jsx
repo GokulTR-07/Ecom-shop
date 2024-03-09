@@ -6,11 +6,10 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { server } from "../../server";
 import styles from "../../styles/styles";
-import { backend_url } from "../../server";
 import {
   addToWishlist,
   removeFromWishlist,
@@ -29,13 +28,7 @@ const ProductDetails = ({ data }) => {
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
-  const {id} = useParams();
   const dispatch = useDispatch();
-
-  useEffect(()=>{
-    dispatch(getAllProductsShop(data?.shop._id));
-  }, [dispatch,data]);
-
   useEffect(() => {
     dispatch(getAllProductsShop(data && data?.shop._id));
     if (wishlist && wishlist.find((i) => i._id === data?._id)) {
@@ -93,11 +86,11 @@ const ProductDetails = ({ data }) => {
     );
 
   const avg =  totalRatings / totalReviewsLength || 0;
+
   const averageRating = avg.toFixed(2);
 
 
   const handleMessageSubmit = async () => {
-    
     if (isAuthenticated) {
       const groupTitle = data._id + user._id;
       const userId = user._id;
@@ -127,8 +120,7 @@ const ProductDetails = ({ data }) => {
             <div className="block w-full 800px:flex">
               <div className="w-full 800px:w-[50%]">
                 <img
-                src={`${backend_url}${data && data.images[select]}`}
-                  // src={data.image_Url[select].url}
+                  src={`${data && data.images[select]?.url}`}
                   alt=""
                   className="w-[80%]"
                 />
@@ -141,8 +133,7 @@ const ProductDetails = ({ data }) => {
                         } cursor-pointer`}
                       >
                         <img
-                        src={`${backend_url}${i}`}
-                          // src={data?.image_Url[0].url}
+                          src={`${i?.url}`}
                           alt=""
                           className="h-[200px] overflow-hidden mr-3 mt-3"
                           onClick={() => setSelect(index)}
@@ -153,29 +144,18 @@ const ProductDetails = ({ data }) => {
                     className={`${
                       select === 1 ? "border" : "null"
                     } cursor-pointer`}
-                  >
-                    {/* <img
-                      src={`${backend_url}${data.images && data.images[1]}`}
-                      // src={data?.image_Url[1].url}
-                      alt=""
-                      className="h-[200px] overflow-hidden mr-3 mt-3"
-                      onClick={() => setSelect(1)}
-                    /> */}
-                  </div>
+                  ></div>
                 </div>
               </div>
-
               <div className="w-full 800px:w-[50%] pt-5">
                 <h1 className={`${styles.productTitle}`}>{data.name}</h1>
                 <p>{data.description}</p>
                 <div className="flex pt-3">
                   <h4 className={`${styles.productDiscountPrice}`}>
                     {data.discountPrice}$
-                    {/* {data.discount_price}$ */}
                   </h4>
                   <h3 className={`${styles.price}`}>
                     {data.originalPrice ? data.originalPrice + "$" : null}
-                    {/* {data.price ? data.price + "$" : null} */}
                   </h3>
                 </div>
 
@@ -217,7 +197,6 @@ const ProductDetails = ({ data }) => {
                     )}
                   </div>
                 </div>
-
                 <div
                   className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}
                   onClick={() => addToCartHandler(data._id)}
@@ -226,12 +205,10 @@ const ProductDetails = ({ data }) => {
                     Add to cart <AiOutlineShoppingCart className="ml-1" />
                   </span>
                 </div>
-
                 <div className="flex items-center pt-8">
                   <Link to={`/shop/preview/${data?.shop._id}`}>
                     <img
-                    src={`${backend_url}${data?.shop?.avatar}`}
-                      // src={data.shop.shop_avatar.url}
+                      src={`${data?.shop?.avatar?.url}`}
                       alt=""
                       className="w-[50px] h-[50px] rounded-full mr-2"
                     />
@@ -242,7 +219,6 @@ const ProductDetails = ({ data }) => {
                         {data.shop.name}
                       </h3>
                     </Link>
-
                     <h5 className="pb-3 text-[15px]">
                       ({averageRating}/5) Ratings
                     </h5>
@@ -272,7 +248,6 @@ const ProductDetails = ({ data }) => {
     </div>
   );
 };
-
 
 const ProductDetailsInfo = ({
   data,
@@ -335,40 +310,30 @@ const ProductDetailsInfo = ({
 
       {active === 2 ? (
         <div className="w-full min-h-[40vh] flex flex-col items-center py-3 overflow-y-scroll">
-        {data &&
-          data.reviews?.map((item, index) => (
-            <div className="w-full flex my-2">
-              <img
-                src={`${backend_url}${item?.user?.avatar}`}
-                // src={`${backend_url}${data?.shop?.avatar}`}
-                // src={data.shop.shop_avatar.url}
-                alt=""
-                className="w-[50px] h-[50px] rounded-full"
-              />
-              <div className="pl-2 ">
-                <div className="w-full flex items-center">
-                  <h1 className="font-[500] mr-3">
-                    {/* {data.shop.name} */}
-                    {item.user.name}
-                  </h1>
-                  <Ratings rating={data?.ratings} />
+          {data &&
+            data.reviews.map((item, index) => (
+              <div className="w-full flex my-2">
+                <img
+                  src={`${item.user.avatar?.url}`}
+                  alt=""
+                  className="w-[50px] h-[50px] rounded-full"
+                />
+                <div className="pl-2 ">
+                  <div className="w-full flex items-center">
+                    <h1 className="font-[500] mr-3">{item.user.name}</h1>
+                    <Ratings rating={data?.ratings} />
+                  </div>
+                  <p>{item.comment}</p>
                 </div>
-                <p>
-                  {/* {data.shop.description} */}
-                  {item?.comment}
-                </p>
               </div>
-            </div>
-          ))}
+            ))}
 
-        <div className="w-full flex justify-center">
-          {data && data.reviews?.length === 0 && (
-            <h5>No Reviews have for this product!</h5>
-        )}
-        </div> 
-          
+          <div className="w-full flex justify-center">
+            {data && data.reviews.length === 0 && (
+              <h5>No Reviews have for this product!</h5>
+            )}
+          </div>
         </div>
-        
       ) : null}
 
       {active === 3 && (
@@ -377,8 +342,7 @@ const ProductDetailsInfo = ({
             <Link to={`/shop/preview/${data.shop._id}`}>
               <div className="flex items-center">
                 <img
-                  src={`${backend_url}${data?.shop?.avatar}`}
-                  // src={data.shop.shop_avatar.url}
+                  src={`${data?.shop?.avatar?.url}`}
                   className="w-[50px] h-[50px] rounded-full"
                   alt=""
                 />
@@ -386,40 +350,29 @@ const ProductDetailsInfo = ({
                   <h3 className={`${styles.shop_name}`}>{data.shop.name}</h3>
                   <h5 className="pb-2 text-[15px]">
                     ({averageRating}/5) Ratings
-                    {/* ({data.shop.ratings}) Ratings */}
-                    {/* (4/5) Ratings */}
                   </h5>
                 </div>
               </div>
             </Link>
             <p className="pt-2">{data.shop.description}</p>
           </div>
-
           <div className="w-full 800px:w-[50%] mt-5 800px:mt-0 800px:flex flex-col items-end">
             <div className="text-left">
               <h5 className="font-[600]">
-                Joined on:
-                {" "}
+                Joined on:{" "}
                 <span className="font-[500]">
                   {data.shop?.createdAt?.slice(0, 10)}
-                  {/* 28 March,2024 */}
                 </span>
               </h5>
               <h5 className="font-[600] pt-3">
-                Total Products:
-                {" "}
+                Total Products:{" "}
                 <span className="font-[500]">
                   {products && products.length}
-                  {/* 1000 */}
                 </span>
               </h5>
               <h5 className="font-[600] pt-3">
-                Total Reviews:
-                {" "}
-                <span className="font-[500]">
-                  {totalReviewsLength}
-                  {/* 300 */}
-                </span>
+                Total Reviews:{" "}
+                <span className="font-[500]">{totalReviewsLength}</span>
               </h5>
               <Link to="/">
                 <div
@@ -437,5 +390,3 @@ const ProductDetailsInfo = ({
 };
 
 export default ProductDetails;
-
-

@@ -30,7 +30,7 @@ const DashboardHero = () => {
   // const serviceCharge = totalEarningWithoutTax ? totalEarningWithoutTax * 0.1 : 0;
   // const availableBalance = (totalEarningWithoutTax - serviceCharge).toFixed(2) || 0 ;
   
-  const availableBalance = seller?.availableBalance?.toFixed(2);
+  const availableBalance = seller?.availableBalance
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },

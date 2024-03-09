@@ -13,9 +13,6 @@ router.post(
       const myPayment = await stripe.paymentIntents.create({
         amount: req.body.amount,
         currency: "USD",
-        // automatic_payment_methods: {
-        //   enabled: true,
-        // },
         metadata: {
           company: "G-cart",
         },
@@ -35,7 +32,6 @@ router.get(
   catchAsyncErrors(async (req, res, next) => {
     res.status(200).json({ stripeApiKey: process.env.STRIPE_API_KEY });
   })
-
 );
 
 

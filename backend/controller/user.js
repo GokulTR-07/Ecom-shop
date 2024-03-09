@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const User = require("../model/user.js");
 const router = express.Router();
-const {upload} = require("../multer");
+// const {upload} = require("../multer");
 const ErrorHandler = require("../utils/ErrorHandler.js");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors.js");
 const fs = require("fs");
@@ -10,40 +10,58 @@ const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail.js");
 const sendToken = require("../utils/jwtToken.js");
 const { isAuthenticated, isAdmin } = require("../middlewares/auth.js");
+const cloudinary = require("cloudinary");
 
 
-router.post("/create-user", upload.single("file"), async(req,res,next)=> {
+router.post("/create-user", async(req,res,next)=> {
+  // , upload.single("file")
   try {
-    const {name,email,password} = req.body;
+    const {name,email,password, avatar} = req.body;
     const userEmail = await User.findOne({email});
 
   if(userEmail){
-    const filename = req.file.filename;
-    const filePath = `uploads/${filename}`;
-    if (fs.existsSync(filePath)) {
-      fs.unlink(filePath, (err)=>{
-        if(err) {
-          console.log(err);
-          res.status(500).json({message: "Error deleting file"});
-        }
-      });
-    }
+
+    // const filename = req.file.filename;
+    // const filePath = `uploads/${filename}`;
+    // if (fs.existsSync(filePath)) {
+    //   fs.unlink(filePath, (err)=>{
+    //     if(err) {
+    //       console.log(err);
+    //       res.status(500).json({message: "Error deleting file"});
+    //     }
+    //   });
+    // }
     
     return next(new ErrorHandler("User already exists", 400));
   }
 
-  const filename = req.file.filename;
-  const fileUrl = path.join(filename);
+  // const filename = req.file.filename;
+  // const fileUrl = path.join(filename);
+  // const user = {
+  //   name: name,
+  //   email: email,
+  //   password: password,
+  //   avatar: fileUrl
+  // };
+
+  const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+    folder: "avatars",
+  });
+
   const user = {
     name: name,
     email: email,
     password: password,
-    avatar: fileUrl
+    avatar: {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    },
   };
 
   const activationToken = createActivationToken(user);
-
+  // const activationUrl = `http://localhost:3000/activation/${activationToken}`;
   const activationUrl = `https://ecom-shop-z8uk.vercel.app/activation/${activationToken}`;
+
     try {
       await sendMail({
         email: user.email,
@@ -224,42 +242,42 @@ router.put(
 router.put(
   "/update-avatar",
   isAuthenticated,
-  upload.single("image"),
+  // upload.single("image"),
   catchAsyncErrors(async (req, res, next) => {
     try {
       let existsUser = await User.findById(req.user.id);
 
-      // if (req.body.avatar !== "") {
-      //   const imageId = existsUser.avatar.public_id;
+      if (req.body.avatar !== "") {
+        const imageId = existsUser.avatar.public_id;
 
-      //   await cloudinary.v2.uploader.destroy(imageId);
+        await cloudinary.v2.uploader.destroy(imageId);
 
-      //   const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-      //     folder: "avatars",
-      //     width: 150,
-      //   });
+        const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+          folder: "avatars",
+          width: 150,
+        });
 
-      //   existsUser.avatar = {
-      //     public_id: myCloud.public_id,
-      //     url: myCloud.secure_url,
-      //   };
-      // }
+        existsUser.avatar = {
+          public_id: myCloud.public_id,
+          url: myCloud.secure_url,
+        };
+      }
 
-      const existAvatarPath = `uploads/${existsUser.avatar}`;
-      fs.unlinkSync(existAvatarPath);
+      // const existAvatarPath = `uploads/${existsUser.avatar}`;
+      // fs.unlinkSync(existAvatarPath);
 
-      const fileUrl = path.join(req.file.filename);
+      // const fileUrl = path.join(req.file.filename);
 
-      const user = await User.findByIdAndUpdate(req.user.id , {
-        avatar: fileUrl,
-      });
+      // const user = await User.findByIdAndUpdate(req.user.id , {
+      //   avatar: fileUrl,
+      // });
 
-      // await existsUser.save();
+      await existsUser.save();
 
       res.status(200).json({
         success: true,
-        user,
-        // user: existsUser,
+        // user,
+        user: existsUser,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
@@ -425,8 +443,8 @@ router.delete(
         );
       }
 
-      // const imageId = user.avatar.public_id;
-      // await cloudinary.v2.uploader.destroy(imageId);
+      const imageId = user.avatar.public_id;
+      await cloudinary.v2.uploader.destroy(imageId);
 
       await User.findByIdAndDelete(req.params.id);
 

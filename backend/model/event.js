@@ -16,7 +16,7 @@ const eventSchema = new mongoose.Schema({
     start_Date: {
         type: Date,
         required: true,
-      },
+    },
     Finish_Date: {
         type: Date,
         required: true,
@@ -24,7 +24,7 @@ const eventSchema = new mongoose.Schema({
     status: {
         type: String,
         default: "Running",
-      },
+    },
     tags:{
         type: String,
     },
@@ -40,17 +40,17 @@ const eventSchema = new mongoose.Schema({
         required: [true,"Please enter your event product stock!"],
     },
     images:[
-        // {
-        //     public_id: {
-        //         type: String,
-        //         required: true,
-        //       },
-        //       url: 
+        {
+            public_id: {
+                type: String,
+                required: true,
+              },
+              url: 
               {
                 type: String,
                 required: true,
               },
-        // },
+        },
     ],
     shopId:{
         type: String,

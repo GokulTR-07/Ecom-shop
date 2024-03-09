@@ -93,7 +93,6 @@ const DashboardMessages = () => {
   }, [currentChat]);
 
   // create new message
-
   const sendMessageHandler = async (e) => {
     e.preventDefault();
 
@@ -150,41 +149,20 @@ const DashboardMessages = () => {
       });
   };
 
-  // const handleImageUpload = async (e) => {
-  //   const reader = new FileReader();
-
-  //   reader.onload = () => {
-  //     if (reader.readyState === 2) {
-  //       setImages(reader.result);
-  //       imageSendingHandler(reader.result);
-  //     }
-  //   };
-
-  //   reader.readAsDataURL(e.target.files[0]);
-  // };
-
   const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    setImages(file);
-    imageSendingHandler(file);
-  }
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImages(reader.result);
+        imageSendingHandler(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+  };
 
   const imageSendingHandler = async (e) => {
-
-    // const message = {
-    //   sender: seller._id,
-    //   text: newMessage,
-    //   images: e,
-    //   conversationId: currentChat._id,
-    // };
-
-    const formData = new FormData();
-
-    formData.append("images", e);
-    formData.append("sender", seller._id);
-    formData.append("text", newMessage);
-    formData.append("conversationId", currentChat._id);
-
     const receiverId = currentChat.members.find(
       (member) => member !== seller._id
     );
@@ -197,19 +175,12 @@ const DashboardMessages = () => {
 
     try {
       await axios
-        .post(`${server}/message/create-new-message`, formData, 
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          }
-        }
-        // {
-        //   images: e,
-        //   sender: seller._id,
-        //   text: newMessage,
-        //   conversationId: currentChat._id,
-        // }
-        )
+        .post(`${server}/message/create-new-message`, {
+          images: e,
+          sender: seller._id,
+          text: newMessage,
+          conversationId: currentChat._id,
+        })
         .then((res) => {
           setImages();
           setMessages([...messages, res.data.message]);
@@ -329,15 +300,14 @@ const MessageList = ({
     >
       <div className="relative">
         <img
-        src={`${backend_url}${user?.avatar}`}
-          // src={`${user?.avatar?.url}`}
+          src={`${user?.avatar?.url}`}
           alt=""
           className="w-[50px] h-[50px] rounded-full"
         />
         {online ? (
           <div className="w-[12px] h-[12px] bg-green-400 rounded-full absolute top-[2px] right-[2px]" />
         ) : (
-          <div className="w-[12px] h-[12px] bg-[#ff1313] rounded-full absolute top-[2px] right-[2px]" />
+          <div className="w-[12px] h-[12px] bg-[#c7b9b9] rounded-full absolute top-[2px] right-[2px]" />
         )}
       </div>
       <div className="pl-3">
@@ -345,7 +315,7 @@ const MessageList = ({
         <p className="text-[16px] text-[#000c]">
           {!isLoading && data?.lastMessageId !== user?._id
             ? "You:"
-            : user?.name?.split(" ")[0] + ": "}{" "}
+            : user?.name.split(" ")[0] + ": "}{" "}
           {data?.lastMessage}
         </p>
       </div>
@@ -371,8 +341,7 @@ const SellerInbox = ({
       <div className="w-full flex p-3 items-center justify-between bg-slate-200">
         <div className="flex">
           <img
-          src={`${backend_url}${userData?.avatar}`}
-            // src={`${userData?.avatar?.url}`}
+            src={`${userData?.avatar?.url}`}
             alt=""
             className="w-[60px] h-[60px] rounded-full"
           />
@@ -401,19 +370,17 @@ const SellerInbox = ({
               >
                 {item.sender !== sellerId && (
                   <img
-                  src={`${backend_url}${userData?.avatar}`}
-                    // src={`${userData?.avatar?.url}`}
+                    src={`${userData?.avatar?.url}`}
                     className="w-[40px] h-[40px] rounded-full mr-3"
                     alt=""
                   />
                 )}
-                {item.images && (
+                {item?.images && (
                   <img
-                    src={`${backend_url}${item.images}`}
-                    // src={`${item.images?.url}`}
+                    src={`${item?.images?.url}`}
                     className="w-[300px] h-[300px] object-cover rounded-[10px] mr-2"
                   />
-                )} 
+                )}
                 {item.text !== "" && (
                   <div>
                     <div

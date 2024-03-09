@@ -51,7 +51,7 @@ router.get(
   })
 );
 
-// // delete coupon code of a shop
+// delete coupon code of a shop
 
 router.delete(
   "/delete-coupon/:id",

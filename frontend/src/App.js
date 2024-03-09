@@ -33,7 +33,6 @@ import ProtectedAdminRoute from './routes/ProtectedAdminRoute.js';
 function App() {
 
   const [stripeApiKey, setStripeApiKey] = useState("");
-  // const [clientSecret, setClientSecret] = useState("");
 
   async function getStripeApiKey() {
     const { data } = await axios.get(`${server}/payment/stripeapikey`);
@@ -41,12 +40,6 @@ function App() {
     setStripeApiKey(loadStripe(data.stripeApiKey));
   }
 
-  // async function getClientSecret(){
-  //   const { secret } = await axios.post(`${server}/payment/process`);
-  //   console.log(secret.clientSecret);
-  //   setClientSecret(secret.clientSecret);
-  // }
-  // getClientSecret();
 
   useEffect(() => {
     Store.dispatch(loadUser());
@@ -57,26 +50,11 @@ function App() {
     
   }, []);
 
-  // useEffect(()=>{
-  //   fetch(`${server}/payment/process`, {
-  //     method: "POST",
-  //     body : JSON.stringify({}),
-  //   }).then(async (res)=> {
-  //     const {clientSecret} = await res.json();
-  //     setClientSecret(clientSecret);
-  //   })
-  // },[])
-
-
   
   return (
         <BrowserRouter>
-          {stripeApiKey &&  
-          // clientSecret && 
-          (
-          <Elements stripe={stripeApiKey} 
-          // options={{clientSecret}}
-          >
+          {stripeApiKey && (
+          <Elements stripe={stripeApiKey}>
             <Routes>
               <Route
                 path="/payment"

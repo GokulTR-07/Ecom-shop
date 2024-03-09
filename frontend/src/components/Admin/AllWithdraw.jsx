@@ -90,6 +90,7 @@ const AllWithdraw = () => {
         toast.success("Withdraw request updated successfully!");
         setData(res.data.withdraws);
         setOpen(false);
+        window.location.reload();
       });
   };
 

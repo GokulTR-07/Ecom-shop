@@ -1,80 +1,71 @@
-import React from "react";
+import React, {useState} from "react";
+import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
+import { RxDotFilled } from 'react-icons/rx';
 import { Link } from "react-router-dom";
-import styles from "../../../styles/styles";
-import { Carousel, IconButton } from "@material-tailwind/react";
 
 const Hero = () => {
+  const slides = [
+    {
+      url: "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/f3832e180145769.6505ae76214ca.jpg",
+    },
+    {
+      url: "https://marketplace.canva.com/EAFHG6sbLsQ/1/0/1600w/canva-brown-beige-simple-special-sale-banner-lQfPvhnznqs.jpg",
+    },
+    {
+      url: "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/7bad8c93546277.5f48a570f12f8.jpg",
+    },
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const prevSlide = () => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const nextSlide = () => {
+    const isLastSlide = currentIndex === slides.length - 1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const goToSlide = (slideIndex) => {
+    setCurrentIndex(slideIndex);
+  };
+
   return (
-    <>
-      <Carousel
-       className="rounded-xl"
-       prevArrow={({ handlePrev }) => (
-         <IconButton
-           variant="text"
-           color="white"
-           size="lg"
-           onClick={handlePrev}
-           className="!absolute top-2/4 left-4 -translate-y-2/4"
-         >
-           <svg
-             xmlns="http://www.w3.org/2000/svg"
-             fill="none"
-             viewBox="0 0 24 24"
-             strokeWidth={2}
-             stroke="currentColor"
-             className="h-6 w-6"
-           >
-             <path
-               strokeLinecap="round"
-               strokeLinejoin="round"
-               d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-             />
-           </svg>
-         </IconButton>
-       )}
-       nextArrow={({ handleNext }) => (
-         <IconButton
-           variant="text"
-           color="white"
-           size="lg"
-           onClick={handleNext}
-           className="!absolute top-2/4 !right-4 -translate-y-2/4"
-         >
-           <svg
-             xmlns="http://www.w3.org/2000/svg"
-             fill="none"
-             viewBox="0 0 24 24"
-             strokeWidth={2}
-             stroke="currentColor"
-             className="h-6 w-6"
-           >
-             <path
-               strokeLinecap="round"
-               strokeLinejoin="round"
-               d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-             />
-           </svg>
-         </IconButton>
-       )}
-     >
-       <img
-         src="https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/f3832e180145769.6505ae76214ca.jpg"
-         alt="image 1"
-         className="h-full w-full object-cover"
-       />
-       <img
-         src="https://mir-s3-cdn-cf.behance.net/projects/404/267e10127721985.Y3JvcCwxNTM0LDEyMDAsMzM0LDA.jpg"
-         alt="image 2"
-         className="h-full w-full object-cover"
-       />
-       <img
-         src="https://img.freepik.com/free-vector/fashion-banner-design-with-accessories-cosmetics_83728-1866.jpg"
-         alt="image 3"
-         className="h-full w-full object-cover"
-       />
-     </Carousel>
-    </>
-  )
+    
+      <div className='max-w-[1400px] h-[780px] w-full m-auto py-16 px-4 relative group'>
+        <Link to={"/products"}>
+        <div
+          style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
+          className='w-full h-full rounded-2xl bg-center bg-cover bg-no-repeat duration-500'
+        ></div>
+        </Link>
+      {/* Left Arrow */}
+      <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
+        <BsChevronCompactLeft onClick={prevSlide} size={30} />
+      </div>
+      {/* Right Arrow */}
+      <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
+        <BsChevronCompactRight onClick={nextSlide} size={30} />
+      </div>
+      <div className='flex top-4 justify-center py-2'>
+        {slides.map((slide, slideIndex) => (
+          <div
+            key={slideIndex}
+            onClick={() => goToSlide(slideIndex)}
+            className='text-2xl cursor-pointer'
+          >
+            <RxDotFilled />
+          </div>
+        ))}
+      </div>
+    </div>
+    
+    
+  );
 }
 
 export default Hero;

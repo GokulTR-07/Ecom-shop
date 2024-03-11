@@ -102,7 +102,7 @@ function Header({ activeHeading }) {
                         <div className="w-full flex items-start-py-3">
                           <img
                           // src={`${backend_url}${i.images[0]}`}
-                            src={`${i.image_Url[0]?.url}`}
+                            src={`${i.images[0]?.url}`}
                             alt=""
                             className="w-[40px] h-[40px] mr-[10px]"
                           />

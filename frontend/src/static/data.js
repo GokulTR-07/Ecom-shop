@@ -27,7 +27,7 @@ export const brandingData = [
   {
     id: 1,
     title: "Free Shipping",
-    Description: "From all orders over 100$",
+    Description: "From all orders over 500",
     icon: (
       <svg
         width="36"
@@ -228,14 +228,14 @@ export const categoriesData = [
     id: 6,
     title: "Gifts",
     subTitle: "",
-    // image_Url:
-      // "https://securecdn.pymnts.com/wp-content/uploads/2014/11/Gifts-Photo-700x489.jpg",
+    image_Url:
+      "https://m.media-amazon.com/images/I/71LMVSg0+YL._AC_UF894,1000_QL80_.jpg",
   },
   {
     id: 7,
     title: "Pet Care",
     subTitle: "",
-    // image_Url: "https://cdn.openpr.com/T/c/Tc15444071_g.jpg",
+    image_Url: "https://cdn01.pharmeasy.in/dam/products_otc/S39917/pedigree-dog-food-adult-chicken-veg-12-kg-2-1632784382.jpg",
   },
   {
     id: 8,

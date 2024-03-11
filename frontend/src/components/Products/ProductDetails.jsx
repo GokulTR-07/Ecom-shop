@@ -118,7 +118,7 @@ const ProductDetails = ({ data }) => {
         <div className={`${styles.section} w-[90%] 800px:w-[80%]`}>
           <div className="w-full py-5">
             <div className="block w-full 800px:flex">
-              <div className="w-full 800px:w-[50%]">
+              <div className="w-full 800px:w-[50%] mr-3">
                 <img
                   src={`${data && data.images[select]?.url}`}
                   alt=""
@@ -135,7 +135,7 @@ const ProductDetails = ({ data }) => {
                         <img
                           src={`${i?.url}`}
                           alt=""
-                          className="h-[200px] overflow-hidden mr-3 mt-3"
+                          className="h-[200px] overflow-hidden mx-3 my-3"
                           onClick={() => setSelect(index)}
                         />
                       </div>

@@ -23,7 +23,7 @@ const Sponsored = () => {
         </div>
         <div className="flex items-start">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/LG_logo_%282015%29.svg/2560px-LG_logo_%282015%29.svg.png"
+            src="https://pngimg.com/d/samsung_logo_PNG14.png"
             style={{width:"150px", objectFit:"contain"}}
             alt=""
           />

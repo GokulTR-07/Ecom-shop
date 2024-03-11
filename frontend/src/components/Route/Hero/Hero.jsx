@@ -1,39 +1,80 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styles from "../../../styles/styles";
+import { Carousel, IconButton } from "@material-tailwind/react";
 
 const Hero = () => {
   return (
-    <div
-      className={`relative min-h-[70vh] 800px:min-h-[80vh] w-full bg-no-repeat ${styles.normalFlex} bg-cover`}
-      style={{
-        backgroundImage:
-          "url(https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/34b5bf180145769.6505ae7623131.jpg)",
-      }}
-    >
-      {/* <div className={`${styles.section} w-[90%] 800px:w-[60%]`}> */}
-        {/* <h1
-          className={`text-[35px] leading-[1.2] 800px:text-[60px] text-[#3d3a3a] font-[600] capitalize`}
-        >
-          Best Collection for <br /> home Decoration
-        </h1> */}
-        {/* <p className="pt-5 text-[16px] font-[Poppins] font-[400] text-[#000000ba]">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae,
-          assumenda? Quisquam itaque <br /> exercitationem labore vel, dolore
-          quidem asperiores, laudantium temporibus soluta optio consequatur{" "}
-          <br /> aliquam deserunt officia. Dolorum saepe nulla provident.
-        </p> */}
-
-        {/* <Link to="/products" className="inline-block">
-            <div className={`${styles.button} mt-5 `}>
-                 <span className="text-[#fff] font-[Poppins] text-[18px]">
-                    Shop Now
-                 </span>
-            </div>
-        </Link> */}
-      {/* </div> */}
-    </div>
-  );
-};
+    <>
+      <Carousel
+       className="rounded-xl"
+       prevArrow={({ handlePrev }) => (
+         <IconButton
+           variant="text"
+           color="white"
+           size="lg"
+           onClick={handlePrev}
+           className="!absolute top-2/4 left-4 -translate-y-2/4"
+         >
+           <svg
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24"
+             strokeWidth={2}
+             stroke="currentColor"
+             className="h-6 w-6"
+           >
+             <path
+               strokeLinecap="round"
+               strokeLinejoin="round"
+               d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+             />
+           </svg>
+         </IconButton>
+       )}
+       nextArrow={({ handleNext }) => (
+         <IconButton
+           variant="text"
+           color="white"
+           size="lg"
+           onClick={handleNext}
+           className="!absolute top-2/4 !right-4 -translate-y-2/4"
+         >
+           <svg
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24"
+             strokeWidth={2}
+             stroke="currentColor"
+             className="h-6 w-6"
+           >
+             <path
+               strokeLinecap="round"
+               strokeLinejoin="round"
+               d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+             />
+           </svg>
+         </IconButton>
+       )}
+     >
+       <img
+         src="https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/f3832e180145769.6505ae76214ca.jpg"
+         alt="image 1"
+         className="h-full w-full object-cover"
+       />
+       <img
+         src="https://mir-s3-cdn-cf.behance.net/projects/404/267e10127721985.Y3JvcCwxNTM0LDEyMDAsMzM0LDA.jpg"
+         alt="image 2"
+         className="h-full w-full object-cover"
+       />
+       <img
+         src="https://img.freepik.com/free-vector/fashion-banner-design-with-accessories-cosmetics_83728-1866.jpg"
+         alt="image 3"
+         className="h-full w-full object-cover"
+       />
+     </Carousel>
+    </>
+  )
+}
 
 export default Hero;
